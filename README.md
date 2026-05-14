@@ -7,12 +7,13 @@
 - `sharding-repl-cache` - финальная реализация с MongoDB sharding, replica sets и Redis-кешем.
 
 Для проверки заданий 2, 3 и 4 используйте директорию `sharding-repl-cache`.
+Сервис приложения запускается из образа `kazhem/pymongo_api:1.0.0`; локальный `api_app/app.py` монтируется в контейнер только для расширенного JSON-вывода по шардам, репликам и кешу.
 
 ## Запуск финального стенда
 
 ```shell
 cd sharding-repl-cache
-docker compose up -d --build
+docker compose up -d
 chmod +x scripts/cluster-init.sh scripts/mongo-init.sh
 ./scripts/cluster-init.sh
 ./scripts/mongo-init.sh

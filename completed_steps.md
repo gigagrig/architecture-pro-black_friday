@@ -71,7 +71,7 @@
 
 ```shell
 cd sharding-repl-cache
-docker compose up -d --build
+docker compose up -d
 chmod +x scripts/cluster-init.sh scripts/mongo-init.sh
 ./scripts/cluster-init.sh
 ./scripts/mongo-init.sh
@@ -97,6 +97,7 @@ curl -w '\ntime_total=%{time_total}\n' -o /dev/null -s http://localhost:8080/hel
   - распределение документов коллекции по шардам;
   - количество реплик в каждом шарде;
   - признак включенного кеша.
+- В compose-файлах сервис `pymongo_api` переведен на образ `kazhem/pymongo_api:1.0.0`; локальный `api_app/app.py` монтируется read-only для сохранения расширенного диагностического вывода.
 
 ## Выполненные проверки
 
@@ -124,7 +125,7 @@ docker compose config
 
 ## Ограничение первичной проверки запуска
 
-Фактический запуск финального стенда командой `docker compose up -d --build` был начат, но не завершился из-за внешней ошибки registry `dh-mirror.gitverse.ru` при скачивании образа MongoDB:
+Фактический запуск финального стенда командой `docker compose up -d` был начат, но не завершился из-за внешней ошибки registry `dh-mirror.gitverse.ru` при скачивании образа MongoDB:
 
 - сначала `i/o timeout`;
 - затем `502 Bad Gateway`.
@@ -137,7 +138,7 @@ Compose-конфигурации и скрипты при этом прошли 
 
 После замены образа финальный стенд `sharding-repl-cache` был успешно проверен:
 
-- `docker compose up -d --build --quiet-pull` завершился успешно;
+- `docker compose up -d --quiet-pull` завершился успешно;
 - `./scripts/cluster-init.sh` успешно инициализировал:
   - config replica set;
   - `shard1ReplSet`;

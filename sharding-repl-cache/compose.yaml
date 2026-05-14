@@ -143,13 +143,13 @@ services:
     image: redis:7-alpine
 
   pymongo_api:
-    build:
-      context: api_app
-      dockerfile: Dockerfile
+    image: kazhem/pymongo_api:1.0.0
     restart: unless-stopped
     depends_on:
       - mongos
       - redis
+    volumes:
+      - ./api_app/app.py:/app/app.py:ro
     ports:
       - "8080:8080"
     environment:

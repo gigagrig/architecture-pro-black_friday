@@ -1,11 +1,12 @@
 # mongo-sharding-repl
 
 Стенд поднимает `pymongo-api`, `mongos`, replica set для config server и два шарда MongoDB. Каждый шард состоит из трех реплик. База данных называется `somedb`, коллекция - `helloDoc`.
+Приложение запускается из образа `kazhem/pymongo_api:1.0.0`; локальный `api_app/app.py` монтируется в контейнер для диагностического вывода.
 
 ## Запуск
 
 ```shell
-docker compose up -d --build
+docker compose up -d
 ```
 
 Быстрый способ выполнить всю инициализацию кластера:
