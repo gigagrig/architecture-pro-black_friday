@@ -55,3 +55,7 @@ curl -w '\ntime_total=%{time_total}\n' -o /dev/null -s http://localhost:8080/hel
 - Redis;
 - `mongos`, config replica set и два shard replica set;
 - CDN в нескольких регионах и origin для статического контента.
+
+## Архитектурный документ для заданий 7-10
+
+Решение заданий 7-10 находится в файле `architecture_tasks_7_10.md`. В нем описаны схемы коллекций MongoDB, shard key, стратегия устранения горячих шардов, чтение с реплик и концепция миграции части данных на Cassandra.
