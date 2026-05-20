@@ -1,0 +1,169 @@
+name: sharding-repl-cache
+
+services:
+  configsvr1:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --configsvr
+      - --replSet
+      - configReplSet
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - configsvr1_data:/data/db
+
+  configsvr2:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --configsvr
+      - --replSet
+      - configReplSet
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - configsvr2_data:/data/db
+
+  configsvr3:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --configsvr
+      - --replSet
+      - configReplSet
+      - --bind_ip_all
+      - --port
+      - "27017"
+    volumes:
+      - configsvr3_data:/data/db
+
+  shard1-1:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --shardsvr
+      - --replSet
+      - shard1ReplSet
+      - --bind_ip_all
+      - --port
+      - "27018"
+    volumes:
+      - shard1_1_data:/data/db
+
+  shard1-2:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --shardsvr
+      - --replSet
+      - shard1ReplSet
+      - --bind_ip_all
+      - --port
+      - "27018"
+    volumes:
+      - shard1_2_data:/data/db
+
+  shard1-3:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --shardsvr
+      - --replSet
+      - shard1ReplSet
+      - --bind_ip_all
+      - --port
+      - "27018"
+    volumes:
+      - shard1_3_data:/data/db
+
+  shard2-1:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --shardsvr
+      - --replSet
+      - shard2ReplSet
+      - --bind_ip_all
+      - --port
+      - "27018"
+    volumes:
+      - shard2_1_data:/data/db
+
+  shard2-2:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --shardsvr
+      - --replSet
+      - shard2ReplSet
+      - --bind_ip_all
+      - --port
+      - "27018"
+    volumes:
+      - shard2_2_data:/data/db
+
+  shard2-3:
+    image: mongo:7.0
+    command:
+      - mongod
+      - --shardsvr
+      - --replSet
+      - shard2ReplSet
+      - --bind_ip_all
+      - --port
+      - "27018"
+    volumes:
+      - shard2_3_data:/data/db
+
+  mongos:
+    image: mongo:7.0
+    restart: unless-stopped
+    depends_on:
+      - configsvr1
+      - configsvr2
+      - configsvr3
+      - shard1-1
+      - shard1-2
+      - shard1-3
+      - shard2-1
+      - shard2-2
+      - shard2-3
+    command:
+      - mongos
+      - --configdb
+      - configReplSet/configsvr1:27017,configsvr2:27017,configsvr3:27017
+      - --bind_ip_all
+      - --port
+      - "27017"
+
+  redis:
+    image: redis:7-alpine
+
+  pymongo_api:
+    image: kazhem/pymongo_api:1.0.0
+    restart: unless-stopped
+    depends_on:
+      - mongos
+      - redis
+    volumes:
+      - ./api_app/app.py:/app/app.py:ro
+    ports:
+      - "8080:8080"
+    environment:
+      MONGODB_URL: "mongodb://mongos:27017"
+      MONGODB_DATABASE_NAME: "somedb"
+      REDIS_URL: "redis://redis:6379"
+
+volumes:
+  configsvr1_data:
+  configsvr2_data:
+  configsvr3_data:
+  shard1_1_data:
+  shard1_2_data:
+  shard1_3_data:
+  shard2_1_data:
+  shard2_2_data:
+  shard2_3_data:
