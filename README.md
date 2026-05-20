@@ -49,7 +49,7 @@ curl -w '\ntime_total=%{time_total}\n' -o /dev/null -s http://localhost:8080/hel
 
 ## Схема
 
-Итоговая схема для заданий 1, 5 и 6 находится в файле `task1.drawio`. На ней отражены:
+Итоговая схема для заданий 1, 5 и 6 находится в файле `MobileWorld-scheme.drawio`. На ней отражены:
 
 - несколько инстансов `pymongo-api`;
 - API Gateway и Consul для Service Discovery;
